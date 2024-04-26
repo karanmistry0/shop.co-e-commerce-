@@ -32,7 +32,7 @@ category_types = ['T shirt','Jeans','Shirt','Trousers','Shorts','CargoPants']
     name: category_names[i]
   )
 
-  ((20..50).to_a.sample).times do
+  ((4..10).to_a.sample).times do
     product = Product.create!(
       name: Faker::Lorem.sentence(word_count: 3),
       description: Faker::Lorem.paragraph(sentence_count: 2),
@@ -44,6 +44,11 @@ category_types = ['T shirt','Jeans','Shirt','Trousers','Shorts','CargoPants']
       product_type: category_types[(0..5).to_a.sample],
       category:category
       )
+
+    product.images.attach(io: File.open("db/images/image_#{(1..13).to_a.sample}.png"),filename: product.name)
+    product.images.attach(io: File.open("db/images/image_14.png"),filename: product.name)
+    product.images.attach(io: File.open("db/images/image_15.png"),filename: product.name)
+    product.images.attach(io: File.open("db/images/image_16.png"),filename: product.name)
 
     ((5..10).to_a.sample).times do
       Review.create!({

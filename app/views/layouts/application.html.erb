@@ -20,12 +20,12 @@
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <% if controller_name === "home"%>
+    <% if controller_name === "home" || controller_name === "products" || controller_name === "cart_item"%>
       <%= render 'layouts/header' %>
     <% end %>
     <%= yield %>
-    <% if controller_name === "home"%>
-    <%= render 'layouts/footer' %>
-  <% end %>
+    <% if controller_name === "home" || controller_name === "products" || controller_name === "cart_item"%>
+      <%= render 'layouts/footer' %>
+     <% end %>
   </body>
 </html>

@@ -73,3 +73,5 @@ gem 'faker'
 gem "image_processing", ">= 1.2"
 
 gem 'money-rails', '~> 1.12'
+
+gem 'tiny-color-rails'

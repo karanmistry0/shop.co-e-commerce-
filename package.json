@@ -3,6 +3,7 @@
     "tailwindcss": "^3.4.3"
   },
   "dependencies": {
-    "el-transition": "^0.0.7"
+    "el-transition": "^0.0.7",
+    "tinycolor2": "^1.6.0"
   }
 }

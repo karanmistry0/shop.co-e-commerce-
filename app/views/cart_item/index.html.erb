@@ -1,0 +1,93 @@
+<div class="py-10">
+  <nav aria-label=" Breadcrumb">
+    <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <li>
+        <div class="flex items-center">
+          <a href="#" class="mr-2 text-sm font-medium text-gray-900">Home</a>
+          <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" aria-hidden="true" class="h-5 w-4 text-gray-300">
+            <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+          </svg>
+        </div>
+      </li>
+
+
+      <li class="text-sm">
+        <span  class="font-medium text-gray-500 hover:text-gray-600">Cart</span>
+      </li>
+    </ol>
+  </nav>
+
+  <div class="pt-6 mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:gap-x-8 lg:px-8 ">
+    <h1 class="mb-10 text-5xl  font-extrabold tracking-tight text-gray-900 uppercase">Your Cart</h1>
+    <div class=" grid grid-cols-5 gap-4">
+      <div class="col-span-3 border w-full p-6 rounded-3xl ">
+        <% current_user.cart_items.each do |cartitem| %>
+          <div class="flex gap-4">
+            <%= image_tag cartitem.product.images.first, class:"h-32 w-32 rounded-xl basis-1/4" %>
+            <div class="flex justify-between basis-3/4">
+              <div class="flex flex-col justify-between">
+                <h3 class="font-medium text-xl"><%= cartitem.product.name %></h3>
+                <div>
+                  <p class="text-sm ">Size: <span class="text-gray-400 "><%= cartitem.size %></span></p>
+                  <p class="text-sm ">Color: <span class="text-gray-400 "><%= cartitem.color %></span></p>
+                </div>
+                <p class="font-bold text-3xl"><%= humanized_money_with_symbol(cartitem.product.discount_price) %></p>
+              </div>
+              <div class="flex flex-col items-end justify-between">
+                <%= button_to cartitem ,method: :delete, data: { confirm: 'Are you sure?' } do %>
+                  <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.25 3.5H13.5V2.75C13.5 2.15326 13.2629 1.58097 12.841 1.15901C12.419 0.737053 11.8467 0.5 11.25 0.5H6.75C6.15326 0.5 5.58097 0.737053 5.15901 1.15901C4.73705 1.58097 4.5 2.15326 4.5 2.75V3.5H0.75C0.551088 3.5 0.360322 3.57902 0.21967 3.71967C0.0790178 3.86032 0 4.05109 0 4.25C0 4.44891 0.0790178 4.63968 0.21967 4.78033C0.360322 4.92098 0.551088 5 0.75 5H1.5V18.5C1.5 18.8978 1.65804 19.2794 1.93934 19.5607C2.22064 19.842 2.60218 20 3 20H15C15.3978 20 15.7794 19.842 16.0607 19.5607C16.342 19.2794 16.5 18.8978 16.5 18.5V5H17.25C17.4489 5 17.6397 4.92098 17.7803 4.78033C17.921 4.63968 18 4.44891 18 4.25C18 4.05109 17.921 3.86032 17.7803 3.71967C17.6397 3.57902 17.4489 3.5 17.25 3.5ZM7.5 14.75C7.5 14.9489 7.42098 15.1397 7.28033 15.2803C7.13968 15.421 6.94891 15.5 6.75 15.5C6.55109 15.5 6.36032 15.421 6.21967 15.2803C6.07902 15.1397 6 14.9489 6 14.75V8.75C6 8.55109 6.07902 8.36032 6.21967 8.21967C6.36032 8.07902 6.55109 8 6.75 8C6.94891 8 7.13968 8.07902 7.28033 8.21967C7.42098 8.36032 7.5 8.55109 7.5 8.75V14.75ZM12 14.75C12 14.9489 11.921 15.1397 11.7803 15.2803C11.6397 15.421 11.4489 15.5 11.25 15.5C11.0511 15.5 10.8603 15.421 10.7197 15.2803C10.579 15.1397 10.5 14.9489 10.5 14.75V8.75C10.5 8.55109 10.579 8.36032 10.7197 8.21967C10.8603 8.07902 11.0511 8 11.25 8C11.4489 8 11.6397 8.07902 11.7803 8.21967C11.921 8.36032 12 8.55109 12 8.75V14.75ZM12 3.5H6V2.75C6 2.55109 6.07902 2.36032 6.21967 2.21967C6.36032 2.07902 6.55109 2 6.75 2H11.25C11.4489 2 11.6397 2.07902 11.7803 2.21967C11.921 2.36032 12 2.55109 12 2.75V3.5Z" fill="#FF3333"/>
+                </svg>
+                <% end %>
+                <div data-controller="cart" class="flex items-center mx-auto justify-center ">
+                  <button type="button" data-quantity="<%= 1 %>" data-action="click->cart#decrement" class="decrement group rounded-l-full px-2 py-2 border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50">
+                    <svg class="w-6 h-6  stroke-gray-900 transition-all duration-500 group-hover:stroke-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" fill="none">
+                      <path d="M16.5 11H5.5" stroke="" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                  </button>
+                  <%#= f.number_field :quantity ,data:{"quantity-target":"quantity"},value:"0", class:"[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[118px] min-w-[80px] placeholder:text-gray-900 py-[15px] text-center bg-transparent "%>
+                  <input type="number" id="quantity" name="quantity" value="<%= cartitem.quantity %>"  data-quantity-target="quantity" class="[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none  border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-12  placeholder:text-gray-900 py-[6px] text-center bg-transparent">
+                  <button type="button" data-quantity="<%= 1 %>" data-action="click->cart#increment" class=" group rounded-r-full px-2 py-2 border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50">
+                    <svg class="w-6 h-6 stroke-gray-900 transition-all duration-500 group-hover:stroke-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" fill="none">
+                      <path d="M11 5.5V16.5M16.5 11H5.5" stroke="" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Divider-->
+          <div class="relative py-6">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+          </div>
+        <%end %>
+      </div>
+      <!-- Sub total -->
+      <div class="col-span-2 mt-6 h-min rounded-3xl border p-6 bg-white w-full  shadow-md md:mt-0 ">
+        <div class="mb-2 flex justify-between">
+          <p class="text-gray-700">Subtotal</p>
+          <p class="text-gray-700">$129.99</p>
+        </div>
+        <div class="flex justify-between">
+          <p class="text-gray-700">Shipping</p>
+          <p class="text-gray-700">$4.99</p>
+        </div>
+        <hr class="my-4" />
+        <div class="flex justify-between">
+          <p class="text-lg font-bold">Total</p>
+          <div class="">
+            <p class="mb-1 text-lg font-bold">$134.98 USD</p>
+            <p class="text-sm text-gray-700">including VAT</p>
+          </div>
+        </div>
+        <button class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check out</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+

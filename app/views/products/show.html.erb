@@ -1,1 +1,181 @@
-<h1><%= @product.name %></h1>
+<div class="bg-white">
+  <div class="pt-6 mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:gap-x-8 lg:px-8 ">
+    <nav aria-label="Breadcrumb">
+      <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <li>
+          <div class="flex items-center">
+            <a href="#" class="mr-2 text-sm font-medium text-gray-900">Men</a>
+            <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" aria-hidden="true" class="h-5 w-4 text-gray-300">
+              <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+            </svg>
+          </div>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <a href="#" class="mr-2 text-sm font-medium text-gray-900">Clothing</a>
+            <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" aria-hidden="true" class="h-5 w-4 text-gray-300">
+              <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+            </svg>
+          </div>
+        </li>
+
+        <li class="text-sm">
+          <span  class="font-medium text-gray-500 hover:text-gray-600"><%= @product.name %></span>
+         </li>
+      </ol>
+    </nav>
+
+    <!-- Image gallery -->
+    <div class="lg:grid lg:grid-cols-2 justify-center gap-x-4">
+      <div class="mt-6 max-w-2xl  lg:grid lg:grid-cols-4 lg:gap-x-2 h-max">
+        <div class="hidden lg:grid lg:grid-cols-1 gap-2 h-4/5">
+          <% @product.images.first(3).each do |image| %>
+          <div class="overflow-hidden ">
+            <%= image_tag image,class:"h-full w-full rounded-2xl object-center" %>
+          </div>
+          <%end %>
+        </div>
+        <div class="col-span-3 sm:overflow-hidden">
+          <%= image_tag @product.images.first , class:"h-4/5 w-full object-cover rounded-2xl object-center"%>
+        </div>
+      </div>
+      <div class="mt-6 max-w-2xl  lg:row-span-3 lg:mt-6 h-full">
+        <h2 class="sr-only">Product information</h2>
+        <p class="text-4xl uppercase font-extrabold tracking-tight text-gray-900 "><%= @product.name %></p>
+
+        <!-- Reviews -->
+        <div class="flex items-center gap-1 mt-4">
+          <% @product.overall_rating.round.times do %>
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24"
+
+                 class="w-8 h-8 fill-amber-300">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+            </svg>
+          <% end %>
+          <span class="ms-2"><%= @product.overall_rating.round %><span class="font-light">/5</span></span>
+        </div>
+
+        <!-- PRICE-->
+        <p class="text-4xl font-medium flex items-center gap-4 mt-4">
+          <% if @product.discount %>
+            <span ><%= humanized_money_with_symbol(@product.discount_price )%></span>
+            <span class="line-through decoration-2 text-gray-400"><%= humanized_money_with_symbol(@product.price) %></span>
+            <span class="text-lg text-red-400 px-3 py-1 rounded-full bg-red-100">-<%= @product.discount_percent %>%</span>
+          <% else %>
+            <span><%= humanized_money_with_symbol(@product.price) %></span>
+          <% end %>
+
+        </p>
+
+        <!--Description-->
+        <p class="mt-4 text-gray-500"><%= @product.description %></p>
+
+        <!--Divider-->
+        <div class="relative py-6">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+        </div>
+
+
+
+
+
+        <%=  form_with url: cart_item_index_path(@product.id),method: :post do |f|%>
+          <%= f.hidden_field :user_id,value:current_user.id %>
+          <%= f.hidden_field :product_id,value:@product.id %>
+
+          <div data-controller="cart">
+
+            <!-- Colors -->
+            <div>
+              <h3 class="text-md font-base text-gray-500">Select Color</h3>
+
+              <legend class="sr-only">Choose a color</legend>
+              <div class="flex items-center space-x-3 mt-4">
+                <%= f.hidden_field :color,data:{"cart-target":"colorInput"} %>
+                <!-- White -->
+
+                  <span id="color-choice-0-label" class="sr-only">White</span>
+                  <span aria-hidden="true" class="h-8 w-8 relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400 border border-gray-600" data-cart-target="colorButton" data-action="click->cart#setColor" ></span>
+
+
+                <!-- Gray -->
+
+                  <span id="color-choice-1-label" class="sr-only">Gray</span>
+                  <span aria-hidden="true" class="h-8 w-8 relative  -m-0.5 flex cursor-pointer items-center justify-center p-0.5 focus:outline-none ring-gray-400 bg-gray-200 rounded-full border border-gray-600" data-cart-target="colorButton" data-action="click->cart#setColor"></span>
+
+
+                <!-- Black -->
+
+                  <%= f.hidden_field :color,data:{"cart-target":"colorInput"} %>
+                  <span id="color-choice-2-label" class="sr-only">Black</span>
+                  <span aria-hidden="true" class="h-8 w-8 bg-gray-900 relative -m-0.5 flex cursor-pointer items-center justify-center  p-0.5 focus:outline-none ring-gray-900  rounded-full border border-gray-600" data-cart-target="colorButton" data-action="click->cart#setColor"></span>
+
+              </div>
+            </div>
+
+            <!--Divider-->
+            <div class="relative py-6">
+              <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+            </div>
+
+            <!-- Sizes -->
+            <div class="3/5">
+              <div >
+                <h3 class="text-md font-base text-gray-500">Choose Size</h3>
+              </div>
+
+              <div class="mt-4 grid lg:grid lg:grid-cols-4 items-center gap-4">
+                <%= f.hidden_field :size,data:{"cart-target":"sizeInput"} %>
+                <span aria-hidden="true" data-action="click->cart#size" data-cart-target="allsizes" data-size="Small" class="relative w-full text-center cursor-pointer bg-primary py-2 px-6 text-gray-500 rounded-full ">Small</span>
+                  <span aria-hidden="true" data-action="click->cart#size" data-cart-target="allsizes" data-size="Medium" class="relative w-full text-center cursor-pointer bg-primary py-2 px-6 text-gray-500 rounded-full ">Medium</span>
+                  <span aria-hidden="true" data-action="click->cart#size" data-cart-target="allsizes" data-size="Large" class=" relative w-full text-center cursor-pointer bg-primary py-2 px-6 text-gray-500 rounded-full ">Large</span>
+                  <span aria-hidden="true" data-action="click->cart#size" data-cart-target="allsizes" data-size="X-Large" class="relative w-full text-center cursor-pointer bg-primary py-2 px-6 text-gray-500 rounded-full " >X-Large</span>
+
+              </div>
+            </div>
+
+            <!--Divider-->
+            <div class="relative py-6">
+              <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                <div class="w-full border-t border-gray-300"></div>
+              </div>
+            </div>
+
+
+            <!-- Quantity-->
+            <div class="flex gap-4">
+              <div  class="flex items-center mx-auto justify-center">
+
+                <button type="button" data-quantity="<%= 1 %>" data-action="click->cart#decrement" class="decrement group rounded-l-full px-6 py-[18px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50">
+                  <svg class="stroke-gray-900 transition-all duration-500 group-hover:stroke-black" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                    <path d="M16.5 11H5.5" stroke="" stroke-width="1.6" stroke-linecap="round" />
+                  </svg>
+                </button>
+                <%= f.number_field :quantity ,data:{"quantity-target":"quantity"},value:"0", class:"[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[118px] min-w-[80px] placeholder:text-gray-900 py-[15px] text-center bg-transparent "%>
+                <!--                <input type="text" id="quantity" name="quantity" value="<%#= @product.quantity%>" data-product-id="<%#= @product.id %>" data-cart-target="quantity" class="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[118px] min-w-[80px] placeholder:text-gray-900 py-[15px] text-center bg-transparent">-->
+                <button type="button" data-quantity="<%= 1 %>" data-action="click->cart#increment" class=" group rounded-r-full px-6 py-[18px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50">
+                  <svg class="stroke-gray-900 transition-all duration-500 group-hover:stroke-black" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                    <path d="M11 5.5V16.5M16.5 11H5.5" stroke="" stroke-width="1.6" stroke-linecap="round" />
+                  </svg>
+                </button>
+              </div>
+              <%= f.submit 'Add to bag' ,class:"flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"%>
+              <!--              <button type="submit" class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>-->
+            </div>
+          </div>
+
+
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>
+<%= render "products/reviews" %>
+<%= render "products/suggestions", suggested_products:@suggested_products %>
