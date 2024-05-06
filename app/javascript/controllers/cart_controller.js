@@ -2,12 +2,17 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
-    static targets = ["quantity","colorInput","colorButton","sizeInput","allsizes"];
+    static targets = ["quantity","colorInput","colorButton","sizeInput","allsizes","totalProductPrice","totalAmount"];
+
+
+    connect(){
+        this.updateDetails();
+    }
 
 
     increment(e) {
         const quantity =parseInt( e.currentTarget.dataset.quantity)
-        const quantityInput = e.currentTarget.parentNode.querySelector('input[data-quantity-target="quantity"]');
+        const quantityInput = e.currentTarget.parentNode.querySelector('input[data-cart-target="quantity"]');
         // Check if the input value is empty or not a number
         if (isNaN(parseInt(quantityInput.value))) {
             quantityInput.value = quantity;
@@ -15,16 +20,20 @@ export default class extends Controller {
             // Parse the input value and add the quantity
             quantityInput.value = parseInt(quantityInput.value) + quantity;
         }
+
+        this.updateDetails();
     }
 
     decrement(e) {
         const quantity =parseInt( e.currentTarget.dataset.quantity)
-        const quantityInput = e.currentTarget.parentNode.querySelector('input[data-quantity-target="quantity"]');
+        const quantityInput = e.currentTarget.parentNode.querySelector('input[data-cart-target="quantity"]');
         if (quantityInput.value > 0) {
 
             quantityInput.value = parseInt(quantityInput.value) - quantity;
 
+            this.updateDetails();
         }
+
     }
 
     size(e){
@@ -62,4 +71,20 @@ export default class extends Controller {
         }
         console.log(typeof colorInput.value)
     }
+
+    updateDetails(){
+        const count_products = this.quantityOfProducts();
+        const total_product_price = this.updateProductPrices(count_products);
+        this.totalProductPriceTarget.textContent = total_product_price
+    }
+
+    quantityOfProducts(){
+        return (this.quantityTarget.value)
+    }
+
+    updateProductPrices(count_products){
+        return (this.element.dataset.productPrice * count_products)
+    }
+
+
 }

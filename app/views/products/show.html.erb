@@ -80,9 +80,6 @@
         </div>
 
 
-
-
-
         <%=  form_with url: cart_item_index_path(@product.id),method: :post do |f|%>
           <%= f.hidden_field :user_id,value:current_user.id %>
           <%= f.hidden_field :product_id,value:@product.id %>
@@ -92,25 +89,19 @@
             <!-- Colors -->
             <div>
               <h3 class="text-md font-base text-gray-500">Select Color</h3>
-
               <legend class="sr-only">Choose a color</legend>
               <div class="flex items-center space-x-3 mt-4">
                 <%= f.hidden_field :color,data:{"cart-target":"colorInput"} %>
                 <!-- White -->
-
                   <span id="color-choice-0-label" class="sr-only">White</span>
-                  <span aria-hidden="true" class="h-8 w-8 relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400 border border-gray-600" data-cart-target="colorButton" data-action="click->cart#setColor" ></span>
-
-
+                  <span aria-hidden="true" class="h-8 w-8 relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400 border border-gray-600"
+                        data-cart-target="colorButton"
+                        data-action="click->cart#setColor"
+                  ></span>
                 <!-- Gray -->
-
                   <span id="color-choice-1-label" class="sr-only">Gray</span>
                   <span aria-hidden="true" class="h-8 w-8 relative  -m-0.5 flex cursor-pointer items-center justify-center p-0.5 focus:outline-none ring-gray-400 bg-gray-200 rounded-full border border-gray-600" data-cart-target="colorButton" data-action="click->cart#setColor"></span>
-
-
                 <!-- Black -->
-
-                  <%= f.hidden_field :color,data:{"cart-target":"colorInput"} %>
                   <span id="color-choice-2-label" class="sr-only">Black</span>
                   <span aria-hidden="true" class="h-8 w-8 bg-gray-900 relative -m-0.5 flex cursor-pointer items-center justify-center  p-0.5 focus:outline-none ring-gray-900  rounded-full border border-gray-600" data-cart-target="colorButton" data-action="click->cart#setColor"></span>
 
@@ -157,7 +148,7 @@
                     <path d="M16.5 11H5.5" stroke="" stroke-width="1.6" stroke-linecap="round" />
                   </svg>
                 </button>
-                <%= f.number_field :quantity ,data:{"quantity-target":"quantity"},value:"0", class:"[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[118px] min-w-[80px] placeholder:text-gray-900 py-[15px] text-center bg-transparent "%>
+                <%= f.number_field :quantity ,data:{"cart-target":"quantity"},value:"0", class:"[-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[118px] min-w-[80px] placeholder:text-gray-900 py-[15px] text-center bg-transparent "%>
                 <!--                <input type="text" id="quantity" name="quantity" value="<%#= @product.quantity%>" data-product-id="<%#= @product.id %>" data-cart-target="quantity" class="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-full max-w-[118px] min-w-[80px] placeholder:text-gray-900 py-[15px] text-center bg-transparent">-->
                 <button type="button" data-quantity="<%= 1 %>" data-action="click->cart#increment" class=" group rounded-r-full px-6 py-[18px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50">
                   <svg class="stroke-gray-900 transition-all duration-500 group-hover:stroke-black" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">

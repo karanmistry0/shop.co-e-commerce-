@@ -12,4 +12,7 @@ Rails.application.routes.draw do
   resources :products, only: [:show] do
   end
   resources :cart_item
+
+  resources :order_payments, only: [:create]
+  get 'order_payments/success',to:"order_payments#success"
 end

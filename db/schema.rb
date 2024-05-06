@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_24_104307) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_03_121941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_104307) do
     t.integer "quantity"
     t.string "size"
     t.string "color"
+    t.bigint "order_id"
+    t.index ["order_id"], name: "index_cart_items_on_order_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
     t.index ["user_id"], name: "index_cart_items_on_user_id"
   end
@@ -58,6 +60,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_104307) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "sub_total_cents"
+    t.string "sub_total_currency"
+    t.integer "discount_cents"
+    t.string "discount_currency"
+    t.integer "total_amount_cents"
+    t.string "total_amount_currency"
+    t.bigint "orders_id", null: false
+    t.index ["orders_id"], name: "index_payments_on_orders_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -108,6 +130,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_24_104307) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "products"
   add_foreign_key "cart_items", "users"
+  add_foreign_key "orders", "users"
+  add_foreign_key "payments", "orders", column: "orders_id"
   add_foreign_key "products", "categories"
   add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "users"
